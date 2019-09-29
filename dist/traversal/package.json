@@ -1,0 +1,40 @@
+{
+  "name": "angular-traversal",
+  "version": "1.1.0",
+  "license": "MIT",
+  "author": {
+    "name": "Eric Brehault",
+    "email": "ebrehault@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Mathilde Pellerin",
+      "email": "mathilde.pellerin@gmail.com"
+    }
+  ],
+  "description": "A traversal navigation library for Angular (v2+)",
+  "keywords": [
+    "angular",
+    "traversal",
+    "routing",
+    "router"
+  ],
+  "peerDependencies": {
+    "@angular/common": "^7.2.0",
+    "@angular/core": "^7.2.0"
+  },
+  "private": false,
+  "main": "bundles/angular-traversal.umd.js",
+  "module": "fesm5/angular-traversal.js",
+  "es2015": "fesm2015/angular-traversal.js",
+  "esm5": "esm5/angular-traversal.js",
+  "esm2015": "esm2015/angular-traversal.js",
+  "fesm5": "fesm5/angular-traversal.js",
+  "fesm2015": "fesm2015/angular-traversal.js",
+  "typings": "angular-traversal.d.ts",
+  "metadata": "angular-traversal.metadata.json",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^1.9.0"
+  }
+}

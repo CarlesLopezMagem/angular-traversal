@@ -1,0 +1,16 @@
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/*
+ * Public API Surface of traversal
+ */
+export { TraversalModule } from './lib';
+export { Traverser } from './lib';
+export { TraverserOutlet } from './lib';
+export { TraverserLink, TraverserButton } from './lib';
+export { Normalizer } from './lib';
+export { Resolver } from './lib';
+export { BasicHttpResolver, BACKEND_BASE_URL } from './lib';
+export { Marker } from './lib';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiJuZzovL2FuZ3VsYXItdHJhdmVyc2FsLyIsInNvdXJjZXMiOlsicHVibGljLWFwaS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7O0FBR0EsT0FBTyxFQUFFLGVBQWUsRUFBRSxNQUFNLE9BQU8sQ0FBQztBQUN4QyxPQUFPLEVBQUUsU0FBUyxFQUFFLE1BQU0sT0FBTyxDQUFDO0FBQ2xDLE9BQU8sRUFBRSxlQUFlLEVBQUUsTUFBTSxPQUFPLENBQUM7QUFDeEMsT0FBTyxFQUFFLGFBQWEsRUFBRSxlQUFlLEVBQUUsTUFBTSxPQUFPLENBQUM7QUFDdkQsT0FBTyxFQUFFLFVBQVUsRUFBRSxNQUFNLE9BQU8sQ0FBQztBQUNuQyxPQUFPLEVBQUUsUUFBUSxFQUFFLE1BQU0sT0FBTyxDQUFDO0FBQ2pDLE9BQU8sRUFBRSxpQkFBaUIsRUFBRSxnQkFBZ0IsRUFBRSxNQUFNLE9BQU8sQ0FBQztBQUM1RCxPQUFPLEVBQUUsTUFBTSxFQUFFLE1BQU0sT0FBTyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLypcbiAqIFB1YmxpYyBBUEkgU3VyZmFjZSBvZiB0cmF2ZXJzYWxcbiAqL1xuZXhwb3J0IHsgVHJhdmVyc2FsTW9kdWxlIH0gZnJvbSAnLi9saWInO1xuZXhwb3J0IHsgVHJhdmVyc2VyIH0gZnJvbSAnLi9saWInO1xuZXhwb3J0IHsgVHJhdmVyc2VyT3V0bGV0IH0gZnJvbSAnLi9saWInO1xuZXhwb3J0IHsgVHJhdmVyc2VyTGluaywgVHJhdmVyc2VyQnV0dG9uIH0gZnJvbSAnLi9saWInO1xuZXhwb3J0IHsgTm9ybWFsaXplciB9IGZyb20gJy4vbGliJztcbmV4cG9ydCB7IFJlc29sdmVyIH0gZnJvbSAnLi9saWInO1xuZXhwb3J0IHsgQmFzaWNIdHRwUmVzb2x2ZXIsIEJBQ0tFTkRfQkFTRV9VUkwgfSBmcm9tICcuL2xpYic7XG5leHBvcnQgeyBNYXJrZXIgfSBmcm9tICcuL2xpYic7XG5leHBvcnQgeyBUYXJnZXQgfSBmcm9tICcuL2xpYic7XG4iXX0=
