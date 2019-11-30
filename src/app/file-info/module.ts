@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { FileInfoComponent } from './file-info.component';
+import { ViewMapping } from '../../../projects/traversal/src/public-api';
 
 @NgModule({
     imports: [],
@@ -9,7 +10,7 @@ import { FileInfoComponent } from './file-info.component';
     providers: [],
 })
 export class FileInfoModule {
-    static traverserViews = [
+    static traverserViews: ViewMapping[] = [
         {name: 'info', components: {file: FileInfoComponent}},
     ];
 }

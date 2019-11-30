@@ -13,11 +13,8 @@ import { BehaviorSubject, of, Observable } from 'rxjs';
 import { Resolver } from './resolver';
 import { Marker } from './marker';
 import { Normalizer } from './normalizer';
-import { Target, HttpParamsOptions } from './interfaces';
+import { Target, HttpParamsOptions, ModuleWithViews, ViewMapping } from './interfaces';
 
-export type ModuleWithViews = Type<any> & {
-    traverserViews: {name: string, components: {[target: string]: Type<any>}}[]
-};
 export type LazyView = () => Promise<Type<any>>;
 
 export const NAVIGATION_PREFIX = new InjectionToken<string>('traversal.prefix');
@@ -28,7 +25,7 @@ export const NAVIGATION_PREFIX = new InjectionToken<string>('traversal.prefix');
 export class Traverser {
 
     public target: BehaviorSubject<Target>;
-    private views: { [name: string]: {[target: string]: Type<any> | string }} = {};
+    private views: { [name: string]: ViewMapping | {[target: string]: string }} = {};
     private lazy: { [id: string]: LazyView} = {};
     private prefix: string;
 
