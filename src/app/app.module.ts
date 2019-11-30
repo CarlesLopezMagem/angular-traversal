@@ -9,7 +9,6 @@ import { TypeMarker } from './marker';
 import { AppComponent } from './app.component';
 import { FileComponent } from './file/file.component';
 import { FolderComponent } from './folder/folder.component';
-import { FileInfoComponent } from './file-info/file-info.component';
 import {
   BasicHttpResolver,
   BACKEND_BASE_URL,
@@ -25,18 +24,12 @@ import {
     AppComponent,
     FileComponent,
     FolderComponent,
-    FileInfoComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     TraversalModule,
-  ],
-  entryComponents: [
-    FileComponent,
-    FolderComponent,
-    FileInfoComponent
   ],
   providers: [
     {provide: Resolver, useClass: BasicHttpResolver},

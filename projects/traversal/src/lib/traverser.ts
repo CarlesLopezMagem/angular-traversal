@@ -1,4 +1,12 @@
-import { Injectable, ComponentFactoryResolver, ComponentFactory, Inject, InjectionToken, Optional } from '@angular/core';
+import {
+    Injectable,
+    ComponentFactoryResolver,
+    ComponentFactory,
+    Inject,
+    InjectionToken,
+    Optional,
+    Type,
+} from '@angular/core';
 import { Location } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
 import { BehaviorSubject, of, Observable } from 'rxjs';
@@ -6,6 +14,11 @@ import { Resolver } from './resolver';
 import { Marker } from './marker';
 import { Normalizer } from './normalizer';
 import { Target, HttpParamsOptions } from './interfaces';
+
+export type ModuleWithViews = Type<any> & {
+    traverserViews: {name: string, components: {[target: string]: Type<any>}}[]
+};
+export type LazyView = () => Promise<Type<any>>;
 
 export const NAVIGATION_PREFIX = new InjectionToken<string>('traversal.prefix');
 
@@ -15,7 +28,8 @@ export const NAVIGATION_PREFIX = new InjectionToken<string>('traversal.prefix');
 export class Traverser {
 
     public target: BehaviorSubject<Target>;
-    private views: { [key: string]: any } = {};
+    private views: { [name: string]: {[target: string]: Type<any> | string }} = {};
+    private lazy: { [id: string]: LazyView} = {};
     private prefix: string;
 
     constructor(
@@ -67,7 +81,7 @@ export class Traverser {
             }
             this.location.go(this.prefix + navigateTo);
         }
-        const viewComponents: { [key: string]: any } = this.views[view];
+        const viewComponents = this.views[view];
         if (viewComponents) {
             let resolver;
             if (!contextPath  // if we have no context path
@@ -83,7 +97,7 @@ export class Traverser {
             if (resolver) {
                 resolver.subscribe((context: any) => {
                     const marker = this.marker.mark(context);
-                    let component;
+                    let component: Type<any> | string;
                     if (marker instanceof Array) {
                         const matches = marker.filter(m => viewComponents[m]);
                         if (matches.length > 0) {
@@ -96,16 +110,21 @@ export class Traverser {
                         component = viewComponents['*'];
                     }
                     if (component) {
-                        this.target.next({
-                            context,
-                            path,
-                            prefixedPath: this.prefix + path,
-                            contextPath,
-                            prefixedContextPath: this.prefix + contextPath,
-                            view,
-                            component,
-                            query: new HttpParams({ fromString: queryString || '' } as HttpParamsOptions)
-                        } as Target);
+                        const promise = typeof(component) === 'string' ?
+                            this.loadLazyView(component) :
+                            Promise.resolve(component);
+                        promise.then(comp => {
+                            this.target.next({
+                                context,
+                                path,
+                                prefixedPath: this.prefix + path,
+                                contextPath,
+                                prefixedContextPath: this.prefix + contextPath,
+                                view,
+                                component: comp,
+                                query: new HttpParams({ fromString: queryString || '' } as HttpParamsOptions)
+                            } as Target);
+                        });
                     }
                 });
             }
@@ -116,11 +135,33 @@ export class Traverser {
         this.traverse(this.location.path().slice(this.prefix.length));
     }
 
-    addView(name: string, target: string, component: any) {
+    addView(name: string, target: string, component: Type<any>) {
         if (!this.views[name]) {
             this.views[name] = {};
         }
         this.views[name][target] = component;
+    }
+
+    addLazyView(name: string, target: string, loader: LazyView) {
+        if (!this.views[name]) {
+            this.views[name] = {};
+        }
+        const id = name + ';' + target;
+        this.views[name][target] = id;
+        this.lazy[id] = loader;
+    }
+
+    loadLazyView(id: string): Promise<Type<any>> {
+        return this.lazy[id]().then(module => {
+            const moduleViews = (module as ModuleWithViews).traverserViews;
+            moduleViews.forEach(view => {
+                this.views[view.name] = !!this.views[view.name] ?
+                    {...this.views[view.name], ...view.components} :
+                    view.components;
+            });
+            const [viewName, target] = id.split(';');
+            return this.views[viewName][target] as Type<any>;
+        });
     }
 
     _resolve(path: string, view?: any, queryString?: string): Observable<any> {
