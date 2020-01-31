@@ -9,9 +9,7 @@ import { Target, HttpParamsOptions } from './interfaces';
 
 export const NAVIGATION_PREFIX = new InjectionToken<string>('traversal.prefix');
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class Traverser {
 
     public target: BehaviorSubject<Target>;
