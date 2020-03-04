@@ -3,12 +3,11 @@ import {
     HostBinding,
     Input,
     OnInit,
-    Optional,
-    Inject,
     HostListener,
 } from '@angular/core';
-import { Traverser, NAVIGATION_PREFIX } from './traverser';
+import { Traverser } from './traverser';
 import { Normalizer } from './normalizer';
+import { Prefix } from "./prefix";
 
 @Directive({
     selector: ':not(a)[traverseTo]',
@@ -34,20 +33,18 @@ export class TraverserButton {
 })
 export class TraverserLink extends TraverserButton implements OnInit {
     @HostBinding() href?: string;
-    private prefix: string;
 
     constructor(
         private privateTraverser: Traverser,
         private normalizer: Normalizer,
-        @Optional() @Inject(NAVIGATION_PREFIX) prefix: string,
+        private prefix: Prefix,
     ) {
         super(privateTraverser);
-        this.prefix = prefix || '';
     }
 
     ngOnInit() {
         if (!!this.traverseTo) {
-            this.href = this.prefix + this.normalizer.normalize(this.traverseTo);
+            this.href = this.prefix.getPrefix() + this.normalizer.normalize(this.traverseTo);
         }
     }
 }

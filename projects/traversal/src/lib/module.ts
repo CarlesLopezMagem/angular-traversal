@@ -5,6 +5,7 @@ import { TraverserOutlet } from './traverser.directive';
 import { TraverserLink, TraverserButton } from './traverser.link';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Traverser } from "./traverser";
+import { Prefix } from "./prefix";
 
 @NgModule({
     declarations: [
@@ -21,6 +22,7 @@ import { Traverser } from "./traverser";
         TraverserLink,
     ],
     providers: [
+        Prefix,
         Location,
         { provide: LocationStrategy, useClass: PathLocationStrategy },
     ]

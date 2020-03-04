@@ -3,13 +3,12 @@ import {
     OnInit,
     OnDestroy,
     ViewContainerRef,
-    Inject,
-    Optional,
     Input,
 } from '@angular/core';
 import { Location } from '@angular/common';
-import { Traverser, NAVIGATION_PREFIX } from './traverser';
+import { Traverser } from './traverser';
 import { Target } from './interfaces';
+import { Prefix } from "./prefix";
 
 @Directive({
     selector: 'traverser-outlet',
@@ -17,20 +16,18 @@ import { Target } from './interfaces';
 export class TraverserOutlet implements OnInit, OnDestroy {
     @Input() noAutoTraverse = false;
     private viewInstance: any;
-    private prefix: string;
 
     constructor(
         private traverser: Traverser,
         private location: Location,
         private container: ViewContainerRef,
-        @Optional() @Inject(NAVIGATION_PREFIX) prefix: string,
+        private prefix: Prefix,
     ) {
-        this.prefix = prefix || '';
     }
 
     ngOnInit() {
         this.traverser.target.subscribe((target: Target) => this.render(target));
-        this.traverser.traverse(this.location.path().slice(this.prefix.length));
+        this.traverser.traverse(this.location.path().slice(this.prefix.getPrefix().length));
         if (!this.noAutoTraverse) {
             this.location.subscribe(loc => {
                 this.traverser.traverse(loc.url || '', false);

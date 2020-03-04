@@ -6,15 +6,14 @@ import { Resolver } from './resolver';
 import { Marker } from './marker';
 import { Normalizer } from './normalizer';
 import { Target, HttpParamsOptions } from './interfaces';
+import { Prefix } from "./prefix";
 
-export const NAVIGATION_PREFIX = new InjectionToken<string>('traversal.prefix');
 
 @Injectable()
 export class Traverser {
 
     public target: BehaviorSubject<Target>;
     private views: { [key: string]: any } = {};
-    private prefix: string;
 
     constructor(
         private location: Location,
@@ -22,16 +21,19 @@ export class Traverser {
         private marker: Marker,
         private normalizer: Normalizer,
         private ngResolver: ComponentFactoryResolver,
-        @Optional() @Inject(NAVIGATION_PREFIX) prefix: string,
+        private prefix: Prefix,
     ) {
-        this.prefix = prefix || '';
+        this.init();
+    }
+
+    init() {
         this.target = new BehaviorSubject({
             component: null,
             context: {},
             contextPath: '',
-            prefixedContextPath: this.prefix,
+            prefixedContextPath: this.prefix.getPrefix(),
             path: '',
-            prefixedPath: this.prefix,
+            prefixedPath: this.prefix.getPrefix(),
             query: new HttpParams(),
             view: 'view',
         });
@@ -63,7 +65,7 @@ export class Traverser {
                 }
                 navigateTo = this.target.value.contextPath + navigateTo;
             }
-            this.location.go(this.prefix + navigateTo);
+            this.location.go(this.prefix.getPrefix() + navigateTo);
         }
         const viewComponents: { [key: string]: any } = this.views[view];
         if (viewComponents) {
@@ -97,9 +99,9 @@ export class Traverser {
                         this.target.next({
                             context,
                             path,
-                            prefixedPath: this.prefix + path,
+                            prefixedPath: this.prefix.getPrefix() + path,
                             contextPath,
-                            prefixedContextPath: this.prefix + contextPath,
+                            prefixedContextPath: this.prefix.getPrefix() + contextPath,
                             view,
                             component,
                             query: new HttpParams({ fromString: queryString || '' } as HttpParamsOptions)
@@ -111,7 +113,7 @@ export class Traverser {
     }
 
     traverseHere() {
-        this.traverse(this.location.path().slice(this.prefix.length));
+        this.traverse(this.location.path().slice(this.prefix.getPrefix().length));
     }
 
     addView(name: string, target: string, component: any) {
